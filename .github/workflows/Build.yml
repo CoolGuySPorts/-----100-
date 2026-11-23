@@ -1,0 +1,25 @@
+name: Build Stepa's Xbox 360 guide
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Prebuilt libxenon toolchain from the free60 project (Docker Hub).
+    container: free60/libxenon:latest
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Build the .elf
+        run: make
+
+      - name: Upload the result
+        uses: actions/upload-artifact@v4
+        with:
+          name: stepa_tutorial
+          path: |
+            *.elf
